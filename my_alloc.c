@@ -128,4 +128,16 @@ void *my_alloc(size_t size)
 
 void my_free(void *ptr)
 {
+    // find header
+    // TODO: how to check if the pointer is valid memory? if the ptr is
+    // not a previously allocated block, this header will be garbage.
+    my_alloc_block_t *header = ((my_alloc_block_t *)ptr) - 1;
+
+    // TODO: coalescing
+
+    header->free = 1;
+
+    // add the block to the top of the free list
+    header->next = my_alloc_state.first;
+    my_alloc_state.first = header;
 }
