@@ -87,19 +87,26 @@ static void _print_block(my_alloc_block_t *block)
 
 static void _print_allocator(my_alloc_t *alloc)
 {
-    printf("[my_alloc] arena layout:\n");
+    printf("[my_alloc] allocator state:\n");
 
-    my_alloc_block_t *curr = (my_alloc_block_t *)alloc->base;
-    char *arena_end = (char *)alloc->base + ARENA_SIZE;
-    
-    if (alloc->base == NULL) {
+    if (alloc->base == NULL)
+    {
         printf("  (not initialized)\n");
         return;
     }
 
-    // _print_block(curr);
+    printf("    base=%p free_head=%p\n", alloc->base, (void *)alloc->first);
+
+    printf("\n");
+
+    printf("[my_alloc] arena layout:\n");
+
+    my_alloc_block_t *curr = (my_alloc_block_t *)alloc->base;
+    char *arena_end = (char *)alloc->base + ARENA_SIZE;
+
     while ((char *)curr < arena_end)
     {
+        printf("    ");
         _print_block(curr);
 
         curr = (my_alloc_block_t *)((char *)(curr + 1) + curr->size);
