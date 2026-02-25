@@ -142,9 +142,9 @@ void my_free(void *ptr)
 
     // TODO: coalescing
 
-    header->free = 1;
-
     // add the block to the top of the free list
     header->next = my_alloc_state.first;
     my_alloc_state.first = header;
+
+    header->free = 1;
 }
