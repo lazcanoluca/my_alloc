@@ -135,4 +135,13 @@ void *my_alloc(size_t size)
 
 void my_free(void *ptr)
 {
+    my_alloc_block_t *header = ((my_alloc_block_t *)ptr) - 1;
+
+    // TODO: coalescing
+
+    // put freed block to top of free list
+    header->next = my_alloc_state.first;
+    my_alloc_state.first = header;
+
+    header->free = 1;
 }
